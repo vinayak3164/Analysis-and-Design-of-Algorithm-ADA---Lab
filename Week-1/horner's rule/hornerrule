@@ -1,0 +1,42 @@
+#include <iostream>
+#include <chrono>
+#include <cstdlib>
+using namespace std;
+using namespace chrono;
+
+int horner(int coeff[], int n, int x) {
+    int result = coeff[0];
+    for (int i = 1; i <= n; i++) {
+        result = result * x + coeff[i];
+    }
+    return result;
+}
+
+int main() {
+    int sizes[] = {100, 500, 1000, 2000, 5000};
+
+    for (int n : sizes) {
+        int *coeff = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            coeff[i] = rand() % 100;
+        }
+
+        int x = 2;
+
+        auto start = high_resolution_clock::now();
+
+        horner(coeff, n, x);
+
+        auto stop = high_resolution_clock::now();
+
+        auto duration = duration_cast<nanoseconds>(stop - start);
+
+        cout << "n = " << n 
+             << " -> Time: " << duration.count() 
+             << " ns" << endl;
+
+        delete[] coeff;
+    }
+
+    return 0;
+}
